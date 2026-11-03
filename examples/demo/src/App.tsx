@@ -8,7 +8,7 @@ import {
   useRenderTracker,
   useTrackedState,
   useWhyDidYouRender,
-} from "reactpulse";
+} from "reactpulse-devtools";
 
 /** Blocks the main thread for `ms` to simulate an expensive render. */
 function burn(ms: number) {

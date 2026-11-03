@@ -63,7 +63,7 @@ const probe = (conditions) =>
       ...conditions.flatMap((c) => ["--conditions", c]),
       "--input-type=module",
       "-e",
-      `import * as m from "reactpulse/devtools"; console.log(Object.keys(m).join(","), m.DevtoolsRoot.toString().length)`,
+      `import * as m from "reactpulse-devtools/devtools"; console.log(Object.keys(m).join(","), m.DevtoolsRoot.toString().length)`,
     ],
     { cwd: root, encoding: "utf8" },
   ).trim();
@@ -80,5 +80,5 @@ assert.ok(
 );
 
 console.log(
-  `reactpulse@${pkg.version}: ESM + CJS exports, shared store, "use client", production stub OK`,
+  `${pkg.name}@${pkg.version}: ESM + CJS exports, shared store, "use client", production stub OK`,
 );

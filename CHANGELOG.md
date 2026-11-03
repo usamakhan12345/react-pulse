@@ -12,7 +12,7 @@ All notable changes to this project are documented here. The format follows
   `usePerformanceTracker`, `useTrackedState`, `useLeakTracker`.
 - `<ReactPulse>` provider with configuration and a lazily loaded dashboard.
 - `<PulseProfiler>` (React `actualDuration`), slow-render detection, User Timing integration.
-- Dashboard (`reactpulse/devtools`): component list, details with previous/current values,
+- Dashboard (`reactpulse-devtools/devtools`): component list, details with previous/current values,
   render history, timeline, performance tab, search/filter/sort, pause/clear, export/import,
   light/dark themes, notifications.
 - Leak helpers: tracked timers, listeners and subscriptions with unmount warnings.

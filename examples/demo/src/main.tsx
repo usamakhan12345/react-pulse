@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { ReactPulse } from "reactpulse";
+import { ReactPulse } from "reactpulse-devtools";
 import { App } from "./App";
 import "./styles.css";
 

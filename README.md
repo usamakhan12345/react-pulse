@@ -3,8 +3,10 @@
 Lightweight React debugging and performance inspection: render tracking, "why did this render?", slow-render detection, leak warnings and a lazy-loaded developer dashboard. TypeScript-first, built only on public React APIs.
 
 ```bash
-npm install reactpulse
+npm install reactpulse-devtools
 ```
+
+> The project is called ReactPulse; the npm package is **`reactpulse-devtools`** (npm rejected the plain name `reactpulse` as too similar to the existing `react-pulse`). All imports below use that name.
 
 - **Small.** Using the hooks costs **~4.3–4.8 KB gzip** (measured, see [Bundle size](#bundle-size)). The dashboard is a separate lazy chunk and is replaced by a 0.08 KB stub in production builds.
 - **Honest.** Causes that React does not expose are labelled **probable**, never presented as fact. See [Limitations](#limitations).
@@ -27,7 +29,7 @@ npm install reactpulse
 Hooks work on their own, with no provider and no dashboard:
 
 ```tsx
-import { useRenderTracker } from "reactpulse";
+import { useRenderTracker } from "reactpulse-devtools";
 
 function UserProfile({ name, age }: { name: string; age: number }) {
   useRenderTracker("UserProfile", { props: { name, age }, log: true });
@@ -51,7 +53,7 @@ since previous render: 1204ms
 Add the provider to get configuration plus the dashboard (loaded lazily, only when monitoring is enabled):
 
 ```tsx
-import { ReactPulse } from "reactpulse";
+import { ReactPulse } from "reactpulse-devtools";
 
 export function Root() {
   return (
@@ -159,7 +161,7 @@ These are three different things; the dashboard labels which one you are looking
 | **Interaction** (`startInteraction`) | Your start call until the next animation frame + following task | Anything between start and the next paint | – (approximation; background tabs do not paint) |
 
 ```tsx
-import { PulseProfiler } from "reactpulse";
+import { PulseProfiler } from "reactpulse-devtools";
 <PulseProfiler id="Feed"><Feed /></PulseProfiler>   // use an id no hook uses
 ```
 
@@ -182,7 +184,7 @@ With `performanceApi: true`, tracked renders also emit `performance.measure("⚛
 The panel is responsive (it adapts to its own width, so it also works docked right or on phones). Use the dashboard on its own inside any layout:
 
 ```tsx
-import { Dashboard } from "reactpulse/devtools";
+import { Dashboard } from "reactpulse-devtools/devtools";
 <div style={{ height: 600 }}><Dashboard theme="dark" /></div>
 ```
 
@@ -215,7 +217,7 @@ Outside React use `createLeakScope("Name")` (`check()` runs the unmount check). 
 ## Export and import reports
 
 ```ts
-import { exportReport, exportReportJSON, downloadReport, importReport } from "reactpulse";
+import { exportReport, exportReportJSON, downloadReport, importReport } from "reactpulse-devtools";
 
 const report = exportReport();      // JSON-safe object (cycles, functions, undefined are made safe)
 downloadReport();                   // browser: saves reactpulse-report-<time>.json
@@ -259,7 +261,7 @@ The package ships a `"use client"` directive, so it works from Server Component 
 
 ```tsx
 // app/layout.tsx (App Router, a Server Component)
-import { ReactPulse } from "reactpulse";
+import { ReactPulse } from "reactpulse-devtools";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -275,13 +277,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```tsx
 // any client component
 "use client";
-import { useRenderTracker } from "reactpulse";
+import { useRenderTracker } from "reactpulse-devtools";
 ```
 
 ```tsx
 // pages/_app.tsx (Pages Router)
 import type { AppProps } from "next/app";
-import { ReactPulse } from "reactpulse";
+import { ReactPulse } from "reactpulse-devtools";
 export default function App({ Component, pageProps }: AppProps) {
   return <ReactPulse><Component {...pageProps} /></ReactPulse>;
 }
@@ -292,13 +294,13 @@ Notes: config passed from a Server Component must be serialisable (no functions 
 ## Production builds
 
 - `enabled: "auto"` switches monitoring off when `NODE_ENV === "production"`.
-- `reactpulse/devtools` has a `production` export condition that resolves to a ~0.1 KB stub, so Vite, webpack and Turbopack builds contain **no dashboard code**. (Verified with a Vite production build: no dashboard strings in the output.)
+- `reactpulse-devtools/devtools` has a `production` export condition that resolves to a ~0.1 KB stub, so Vite, webpack and Turbopack builds contain **no dashboard code**. (Verified with a Vite production build: no dashboard strings in the output.)
 - To ship the dashboard on purpose (e.g. a staging build):
 
 ```tsx
 <ReactPulse
   config={{ enabled: true }}
-  loadDevtools={() => import("reactpulse/devtools/full")}
+  loadDevtools={() => import("reactpulse-devtools/devtools/full")}
 >
 ```
 
@@ -374,7 +376,7 @@ npm run setup:compat   # installs the isolated React 18 used by test:react18
 npm test               # React 19
 npm run test:react18   # same suite on React 18
 npm run typecheck && npm run lint
-npm run build          # tsup: ESM + CJS + .d.ts for "reactpulse" and "reactpulse/devtools"
+npm run build          # tsup: ESM + CJS + .d.ts for "reactpulse-devtools" and "reactpulse-devtools/devtools"
 npm run smoke          # exercises dist/ (ESM, CJS, exports, "production" condition)
 npm run size           # bundle sizes
 npm run bench          # per-render overhead

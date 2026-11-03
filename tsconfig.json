@@ -19,9 +19,9 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "reactpulse": ["src/index.ts"],
-      "reactpulse/devtools": ["src/devtools/index.ts"],
-      "reactpulse/devtools/full": ["src/devtools/index.ts"]
+      "reactpulse-devtools": ["src/index.ts"],
+      "reactpulse-devtools/devtools": ["src/devtools/index.ts"],
+      "reactpulse-devtools/devtools/full": ["src/devtools/index.ts"]
     },
     "types": ["node"]
   },

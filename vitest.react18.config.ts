@@ -10,8 +10,11 @@ const compat = (p: string) => src(`./compat/react18/node_modules/${p}`);
 export default defineConfig({
   resolve: {
     alias: [
-      { find: /^reactpulse\/devtools(\/full)?$/, replacement: src("./src/devtools/index.ts") },
-      { find: /^reactpulse$/, replacement: src("./src/index.ts") },
+      {
+        find: /^reactpulse-devtools\/devtools(\/full)?$/,
+        replacement: src("./src/devtools/index.ts"),
+      },
+      { find: /^reactpulse-devtools$/, replacement: src("./src/index.ts") },
       { find: /^react$/, replacement: compat("react") },
       { find: /^react\/(.*)$/, replacement: compat("react") + "/$1" },
       { find: /^react-dom$/, replacement: compat("react-dom") },

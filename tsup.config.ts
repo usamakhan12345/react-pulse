@@ -8,7 +8,7 @@ const shared = {
   // tree-shakes the bundle and consumers' bundlers do the rest.
   treeshake: false,
   splitting: false,
-  external: ["react", "react-dom", "react/jsx-runtime", "reactpulse/devtools"],
+  external: ["react", "react-dom", "react/jsx-runtime", "reactpulse-devtools/devtools"],
   // Hooks and the provider only make sense on the client; this also makes the
   // package importable from Next.js App Router client boundaries.
   banner: { js: '"use client";' },

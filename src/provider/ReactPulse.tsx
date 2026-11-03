@@ -28,13 +28,13 @@ export interface ReactPulseProps extends DevtoolsOptions {
   dashboard?: boolean;
   /**
    * Custom dashboard loader. Use it to ship the dashboard in a production
-   * build on purpose: `loadDevtools={() => import("reactpulse/devtools/full")}`.
+   * build on purpose: `loadDevtools={() => import("reactpulse-devtools/devtools/full")}`.
    */
   loadDevtools?: () => Promise<{ DevtoolsRoot: ComponentType<DevtoolsProps> }>;
   children?: ReactNode;
 }
 
-const defaultLoader = () => import("reactpulse/devtools");
+const defaultLoader = () => import("reactpulse-devtools/devtools");
 
 /**
  * Applies configuration and (when enabled, in the browser) lazy-loads the

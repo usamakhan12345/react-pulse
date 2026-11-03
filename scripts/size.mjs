@@ -60,7 +60,7 @@ for (const [name, contents] of scenarios) {
     format: "esm",
     platform: "browser",
     target: "es2020",
-    external: ["react", "react-dom", "react/jsx-runtime", "reactpulse/devtools"],
+    external: ["react", "react-dom", "react/jsx-runtime", "reactpulse-devtools/devtools"],
     define: { "process.env.NODE_ENV": '"production"' },
     write: false,
     logLevel: "error",

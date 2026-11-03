@@ -83,7 +83,7 @@ function Toasts({ enabled, left }: { enabled: boolean; left: boolean }) {
 
 /**
  * Floating launcher + docked panel used by `<ReactPulse>`. Exported from
- * `reactpulse/devtools`; the core bundle loads it lazily.
+ * `reactpulse-devtools/devtools`; the core bundle loads it lazily.
  */
 export function DevtoolsRoot({
   theme = "system",

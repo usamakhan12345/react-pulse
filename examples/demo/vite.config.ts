@@ -9,8 +9,11 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: [
-      { find: /^reactpulse\/devtools(\/full)?$/, replacement: src("../../src/devtools/index.ts") },
-      { find: /^reactpulse$/, replacement: src("../../src/index.ts") },
+      {
+        find: /^reactpulse-devtools\/devtools(\/full)?$/,
+        replacement: src("../../src/devtools/index.ts"),
+      },
+      { find: /^reactpulse-devtools$/, replacement: src("../../src/index.ts") },
     ],
   },
 });
