@@ -1,6 +1,6 @@
 {
   "name": "reactpulse-devtools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lightweight React debugging and performance inspector: render tracking, why-did-you-render, slow render detection, leak warnings and a lazy-loaded dev dashboard.",
   "keywords": [
     "react",
