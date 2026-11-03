@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+*.tsbuildinfo
+compat/*/node_modules
+compat/*/package-lock.json
+examples/demo/dist
+.DS_Store

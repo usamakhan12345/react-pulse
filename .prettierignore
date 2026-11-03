@@ -1,0 +1,5 @@
+dist
+node_modules
+compat
+package-lock.json
+*.md

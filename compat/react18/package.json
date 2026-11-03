@@ -1,0 +1,12 @@
+{
+  "name": "reactpulse-compat-react18",
+  "private": true,
+  "description": "Isolated React 18 install used by `npm run test:react18`.",
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/user-event": "^14.6.8"
+  }
+}
