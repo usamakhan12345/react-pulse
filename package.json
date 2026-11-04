@@ -1,6 +1,6 @@
 {
   "name": "reactpulse-devtools",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Lightweight React and React Native debugging and performance inspector: render tracking, why-did-this-render, slow render detection, leak warnings and a developer dashboard for web and native.",
   "keywords": [
     "react",

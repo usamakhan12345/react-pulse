@@ -1,4 +1,4 @@
-export const VERSION = "0.1.1";
+export const VERSION = "0.2.0";
 
 /** React Native's bundler defines `__DEV__`; other bundlers do not. */
 declare const __DEV__: boolean | undefined;
