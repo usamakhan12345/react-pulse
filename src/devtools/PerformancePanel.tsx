@@ -120,8 +120,10 @@ export function PerformancePanel({ store, components, onSelect }: PerformancePan
         <ul className="rp-plain">
           <li>
             <b>Render span</b> (hooks): from the hook call during render until the commit. Includes
-            child components and DOM updates, excludes paint. With concurrent rendering it can
-            include time React yielded to the browser.
+            child components, any component React renders after this one in the same pass, and DOM
+            updates; excludes paint. Large commits (like the first mount) overstate it, so treat it
+            as an upper bound. With concurrent rendering it can also include time React yielded to
+            the browser.
           </li>
           <li>
             <b>Profiler duration</b>: React&apos;s <code>actualDuration</code> from{" "}

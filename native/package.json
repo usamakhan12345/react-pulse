@@ -1,0 +1,10 @@
+{
+  "name": "reactpulse-devtools-native",
+  "private": true,
+  "description": "Resolution shim so tools without package.json \"exports\" support (older Metro, TypeScript node10) can import reactpulse-devtools/native.",
+  "main": "../dist/native.cjs",
+  "module": "../dist/native.js",
+  "react-native": "../dist/native.js",
+  "types": "../dist/native.d.ts",
+  "sideEffects": false
+}

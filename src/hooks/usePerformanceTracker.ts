@@ -24,7 +24,7 @@ export interface PerformanceTracker {
 }
 
 /**
- * Tracks render timing for the calling component (render-to-commit span, see
+ * Tracks render timing for the calling component (an upper-bound render-to-commit span, see
  * the README for what that does and does not include) and exposes helpers for
  * timing your own work. Do not combine with `useRenderTracker` on the same
  * component: both record renders.

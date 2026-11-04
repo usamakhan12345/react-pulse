@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ComponentType, ReactNode } from "react";
 import type { PulseConfig } from "../core/types";
 import { getStore } from "../core/store";
-import { isEqual } from "../core/comparator";
 import { isBrowser } from "../utils/environment";
+import { useApplyConfig } from "./useApplyConfig";
 
 export interface DevtoolsOptions {
   /** `"system"` follows `prefers-color-scheme`. Default `"system"`. */
@@ -51,14 +51,7 @@ export function ReactPulse({
   children,
 }: ReactPulseProps) {
   const store = getStore();
-  const applied = useRef<Partial<PulseConfig> | undefined>(undefined);
-  // Applied during render on purpose: children's first render and mount effects
-  // run before this component's own effects, and they must already see the config.
-  // It is idempotent, so StrictMode's double render is harmless.
-  if (config && (!applied.current || !isEqual(applied.current, config, 2))) {
-    applied.current = config;
-    store.configure(config);
-  }
+  useApplyConfig(config);
 
   const [Devtools, setDevtools] = useState<ComponentType<DevtoolsProps> | null>(null);
   const wantDashboard = (dashboard ?? true) && isBrowser() && store.isEnabled();

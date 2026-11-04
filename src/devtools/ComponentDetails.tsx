@@ -72,7 +72,7 @@ export function ComponentDetails({ record, store, eventId, onSelectEvent }: Comp
       <p className="rp-note">
         {profiler
           ? "Duration is React's actualDuration from a Profiler: time spent rendering this subtree, excluding browser paint."
-          : "Duration is the render-to-commit span of this component: it includes rendering its children and DOM updates, but not browser paint."}
+          : "Duration is the render-to-commit span from this component's render. It also covers components React rendered after it in the same pass (so large commits such as the first mount overstate it) and DOM updates, but not browser paint. Treat it as an upper bound."}
       </p>
 
       {frequent.length > 0 && (

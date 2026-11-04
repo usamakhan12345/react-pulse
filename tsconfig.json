@@ -21,10 +21,11 @@
     "paths": {
       "reactpulse-devtools": ["src/index.ts"],
       "reactpulse-devtools/devtools": ["src/devtools/index.ts"],
+      "reactpulse-devtools/native": ["src/native/index.ts"],
       "reactpulse-devtools/devtools/full": ["src/devtools/index.ts"]
     },
     "types": ["node"]
   },
-  "include": ["src", "tests", "examples", "scripts", "*.config.ts"],
+  "include": ["src", "tests", "examples", "landing", "bench", "scripts", "*.config.ts"],
   "exclude": ["node_modules", "dist", "compat"]
 }

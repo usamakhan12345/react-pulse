@@ -14,6 +14,8 @@ export default defineConfig({
         find: /^reactpulse-devtools\/devtools(\/full)?$/,
         replacement: src("./src/devtools/index.ts"),
       },
+      { find: /^react-native$/, replacement: src("./tests/stubs/react-native.tsx") },
+      { find: /^reactpulse-devtools\/native$/, replacement: src("./src/native/index.ts") },
       { find: /^reactpulse-devtools$/, replacement: src("./src/index.ts") },
       { find: /^react$/, replacement: compat("react") },
       { find: /^react\/(.*)$/, replacement: compat("react") + "/$1" },

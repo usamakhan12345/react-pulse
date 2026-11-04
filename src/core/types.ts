@@ -41,7 +41,9 @@ export interface Change {
 /**
  * What `duration` measures:
  * - `span`: from the hook call during render until the layout effect after commit.
- *   Includes descendants rendering and DOM mutation; excludes paint.
+ *   Includes descendants, every component React renders after this hook call in the same
+ *   pass (layout effects only run once the whole tree has rendered) and DOM mutation;
+ *   excludes paint. It is an upper bound that is most inflated on large commits.
  * - `profiler`: React `actualDuration` reported by `<PulseProfiler>` (exact React render time).
  */
 export type DurationKind = "span" | "profiler";

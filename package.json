@@ -1,7 +1,7 @@
 {
   "name": "reactpulse-devtools",
   "version": "0.1.1",
-  "description": "Lightweight React debugging and performance inspector: render tracking, why-did-you-render, slow render detection, leak warnings and a lazy-loaded dev dashboard.",
+  "description": "Lightweight React and React Native debugging and performance inspector: render tracking, why-did-this-render, slow render detection, leak warnings and a developer dashboard for web and native.",
   "keywords": [
     "react",
     "nextjs",
@@ -11,7 +11,11 @@
     "profiler",
     "re-render",
     "why-did-you-render",
-    "hooks"
+    "hooks",
+    "react-native",
+    "expo",
+    "hermes",
+    "mobile"
   ],
   "license": "MIT",
   "repository": {
@@ -30,6 +34,11 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "react-native": {
+        "types": "./dist/native.d.ts",
+        "import": "./dist/native.js",
+        "require": "./dist/native.cjs"
+      },
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -69,10 +78,16 @@
         "default": "./dist/devtools.cjs"
       }
     },
+    "./native": {
+      "types": "./dist/native.d.ts",
+      "import": "./dist/native.js",
+      "require": "./dist/native.cjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
+    "native",
     "README.md",
     "LICENSE"
   ],
@@ -91,18 +106,26 @@
     "size": "node scripts/size.mjs",
     "demo": "vite --config examples/demo/vite.config.ts examples/demo",
     "demo:build": "vite build --config examples/demo/vite.config.ts examples/demo",
-    "verify": "npm run typecheck && npm run lint && npm run test:all && npm run build && npm run smoke && npm run size",
+    "verify": "npm run typecheck && npm run lint && npm run test:all && npm run build && npm run smoke && npm run size && npm run site:build",
     "prepublishOnly": "npm run verify",
     "smoke": "node scripts/smoke.mjs",
     "bench": "vitest run --config vitest.bench.config.ts --reporter=verbose",
-    "version": "node scripts/sync-version.mjs && git add src/utils/environment.ts"
+    "version": "node scripts/sync-version.mjs && git add src/utils/environment.ts",
+    "site": "vite --config landing/vite.config.ts landing",
+    "site:build": "vite build --config landing/vite.config.ts landing",
+    "site:preview": "vite preview --config landing/vite.config.ts landing",
+    "test:native-real": "node scripts/test-react-native.mjs"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "react-native": ">=0.72.0"
   },
   "peerDependenciesMeta": {
     "react-dom": {
+      "optional": true
+    },
+    "react-native": {
       "optional": true
     }
   },
@@ -130,5 +153,6 @@
     "typescript-eslint": "^8.72.1",
     "vite": "^8.3.5",
     "vitest": "^5.1.0"
-  }
+  },
+  "react-native": "./dist/native.js"
 }

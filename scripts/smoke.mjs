@@ -4,8 +4,9 @@
 // "production" export condition. Run after `npm run build`.
 import { createRequire } from "node:module";
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { resolve, dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import assert from "node:assert/strict";
 
@@ -79,6 +80,60 @@ assert.ok(
   "production condition did not resolve to the stub",
 );
 
+// ---- React Native entry --------------------------------------------------
+// react-native cannot be imported in plain Node (Flow syntax, native modules), so load the
+// CommonJS build against a throwaway stub placed on NODE_PATH. This proves the entry
+// resolves, only requires react / react-native, and exposes the native API.
+const stubRoot = mkdtempSync(join(tmpdir(), "rp-rn-stub-"));
+mkdirSync(join(stubRoot, "react-native"), { recursive: true });
+writeFileSync(
+  join(stubRoot, "react-native", "index.js"),
+  `const C = () => null; module.exports = { View: C, Text: C, Pressable: C, ScrollView: C, TextInput: C, FlatList: C,
+    StyleSheet: { create: (s) => s, absoluteFill: {}, hairlineWidth: 1 }, Platform: { OS: "ios" },
+    useColorScheme: () => "light", useWindowDimensions: () => ({ width: 390, height: 844 }),
+    Share: { share: async () => ({}) }, DevSettings: undefined };`,
+);
+const NATIVE_API = [...CORE, "PulseDevtools", "PulseDashboard"];
+const checkNative = (specifier, conditions = []) =>
+  execFileSync(
+    process.execPath,
+    [
+      ...conditions.flatMap((c) => ["--conditions", c]),
+      "-e",
+      `const m = require(${JSON.stringify(specifier)});
+       const missing = ${JSON.stringify(NATIVE_API)}.filter((k) => typeof m[k] !== "function");
+       console.log(missing.length ? "MISSING:" + missing.join(",") : "ok");`,
+    ],
+    { cwd: root, encoding: "utf8", env: { ...process.env, NODE_PATH: stubRoot } },
+  ).trim();
+
+assert.equal(checkNative(dist("native.cjs")), "ok", "dist/native.cjs is missing exports");
+assert.equal(
+  checkNative(`${pkg.name}/native`),
+  "ok",
+  `${pkg.name}/native does not resolve to the native build`,
+);
+// Metro resolves the "react-native" condition for the package root: same import, native build.
+assert.equal(
+  checkNative(pkg.name, ["react-native"]),
+  "ok",
+  `${pkg.name} with the react-native condition did not resolve to the native build`,
+);
+const nativeSource = readFileSync(dist("native.js"), "utf8");
+assert.ok(!nativeSource.startsWith('"use client"'), "native build must not carry the web banner");
+assert.ok(
+  !nativeSource.includes(`${pkg.name}/devtools`),
+  "native build must not reference the web dashboard",
+);
+const nativeImports = [...nativeSource.matchAll(/from\s+"([^"]+)"/g)].map((m) => m[1]);
+for (const spec of new Set(nativeImports)) {
+  assert.ok(
+    ["react", "react/jsx-runtime", "react-native"].includes(spec),
+    `native build imports unexpected module: ${spec}`,
+  );
+}
+rmSync(stubRoot, { recursive: true, force: true });
+
 console.log(
-  `${pkg.name}@${pkg.version}: ESM + CJS exports, shared store, "use client", production stub OK`,
+  `${pkg.name}@${pkg.version}: ESM + CJS exports, shared store, "use client", production stub, React Native entry OK`,
 );

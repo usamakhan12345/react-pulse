@@ -44,6 +44,14 @@ const scenarios = [
   ["Core: everything (import *)", `export * from ${JSON.stringify(dist("index.js"))};`],
   ["Devtools: dashboard chunk (lazy)", `export * from ${JSON.stringify(dist("devtools.js"))};`],
   [
+    "React Native: useRenderTracker via /native",
+    `export { useRenderTracker } from ${JSON.stringify(dist("native.js"))};`,
+  ],
+  [
+    "React Native: <ReactPulse> + native dashboard",
+    `export { ReactPulse } from ${JSON.stringify(dist("native.js"))};`,
+  ],
+  [
     "Production stub (replaces devtools)",
     `export * from ${JSON.stringify(dist("devtools-stub.js"))};`,
   ],
@@ -60,7 +68,13 @@ for (const [name, contents] of scenarios) {
     format: "esm",
     platform: "browser",
     target: "es2020",
-    external: ["react", "react-dom", "react/jsx-runtime", "reactpulse-devtools/devtools"],
+    external: [
+      "react",
+      "react-dom",
+      "react/jsx-runtime",
+      "react-native",
+      "reactpulse-devtools/devtools",
+    ],
     define: { "process.env.NODE_ENV": '"production"' },
     write: false,
     logLevel: "error",

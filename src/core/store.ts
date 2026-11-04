@@ -7,8 +7,9 @@ import type {
   StateChange,
   WarningKind,
 } from "./types";
-import { defaultConfig, matches, mergeConfig, resolveEnabled } from "./config";
+import { initialConfig, matches, mergeConfig, resolveEnabled } from "./config";
 import { consoleLogger } from "../utils/logger";
+import { getGlobal } from "../utils/environment";
 
 export interface LeakResource {
   id: number;
@@ -85,7 +86,7 @@ function emptyRecord(name: string, kind: ComponentRecord["kind"]): ComponentReco
 }
 
 export function createStore(): Store {
-  let config: PulseConfig = defaultConfig;
+  let config: PulseConfig = initialConfig();
   let enabled = resolveEnabled(config.enabled);
   let paused = false;
   let version = 0;
@@ -133,7 +134,7 @@ export function createStore(): Store {
       touch();
     },
     resetConfig() {
-      config = defaultConfig;
+      config = initialConfig();
       enabled = resolveEnabled(config.enabled);
       touch();
     },
@@ -284,11 +285,11 @@ const KEY = Symbol.for("reactpulse.store.v1");
  * bundles (and ESM/CJS copies of the package) always share the same data.
  */
 export function getStore(): Store {
-  const g = globalThis as unknown as Record<symbol, Store | undefined>;
+  const g = getGlobal() as unknown as Record<symbol, Store | undefined>;
   return (g[KEY] ??= createStore());
 }
 
 /** Test helper: drop the shared store so the next `getStore()` starts fresh. */
 export function resetStore(): void {
-  delete (globalThis as unknown as Record<symbol, Store | undefined>)[KEY];
+  delete (getGlobal() as unknown as Record<symbol, Store | undefined>)[KEY];
 }

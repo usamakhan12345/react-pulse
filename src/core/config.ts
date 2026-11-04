@@ -1,5 +1,5 @@
 import type { NameMatcher, PulseConfig } from "./types";
-import { isDev } from "../utils/environment";
+import { isDev, isReactNative } from "../utils/environment";
 
 export const defaultConfig: PulseConfig = {
   enabled: "auto",
@@ -20,6 +20,16 @@ export const defaultConfig: PulseConfig = {
   leakRepeatThreshold: 10,
   uiInterval: 100,
 };
+
+/**
+ * Starting configuration. Evaluated lazily (not at module load) so that bundlers
+ * can drop this code for apps that import only a small hook.
+ */
+export function initialConfig(): PulseConfig {
+  // React Native turns console.warn into on-screen LogBox banners; the dashboard
+  // and toasts show warnings there instead.
+  return isReactNative() ? { ...defaultConfig, warnings: false } : defaultConfig;
+}
 
 export function resolveEnabled(value: PulseConfig["enabled"]): boolean {
   return value === "auto" ? isDev() : value;

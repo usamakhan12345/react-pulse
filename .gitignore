@@ -6,3 +6,5 @@ compat/*/node_modules
 compat/*/package-lock.json
 examples/demo/dist
 .DS_Store
+compat/*/out
+compat/*/.pack
