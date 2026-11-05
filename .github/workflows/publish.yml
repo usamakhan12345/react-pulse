@@ -1,0 +1,27 @@
+name: Publish to npm
+
+# Publishes with npm trusted publishing (OIDC): no npm token or OTP is stored anywhere.
+# One-time setup on npmjs.com: package settings > Trusted Publisher > GitHub Actions,
+# with this repository and the workflow file name "publish.yml".
+# Run it from the Actions tab (Run workflow) on the main branch after bumping the version.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # lets npm verify this workflow as the trusted publisher
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24 # ships npm 11, which supports trusted publishing
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run setup:compat # isolated React 18 install used by test:react18
+      # prepublishOnly runs `npm run verify` (typecheck, lint, tests on React 19 and 18, build, smoke, size, site build)
+      - run: npm publish
